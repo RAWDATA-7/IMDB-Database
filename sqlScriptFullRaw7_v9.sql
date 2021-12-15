@@ -525,7 +525,7 @@ AS $$
 	FROM ratings 
 	LEFT JOIN titles
 	ON titles.titleid = ratings.titleid
-	WHERE ratings.numVotes > 300000
+	WHERE ratings.numVotes > 100000 AND titletype != 'tvEpisode'
 	ORDER BY ratings.avgrating DESC
 	LIMIT 10000;
 $$
@@ -669,12 +669,15 @@ DELETE FROM knownfortitles WHERE titleID NOT IN (SELECT titleID FROM titles);
 ALTER TABLE knownfortitles ADD CONSTRAINT knownfortitles_nameid_fkey  FOREIGN KEY (nameID) REFERENCES names(nameID);
 ALTER TABLE knownfortitles ADD CONSTRAINT knownfortitles_titleid_fkey FOREIGN KEY (titleID) REFERENCES titles(titleID);
 
+
+ALTER TABLE bookmarkings ADD CONSTRAINT bookmarkings_userID_titleID_pkey  PRIMARY KEY (userID, titleID);
+
 --// TESTS FOR FUNCTIONS AND PROCEDURES //--
 --________________________________________--
 CALL createUser('ByornGold69K', 'Bjørn', 'Guldager', 'x@factor.dk', 'y', 'proManxFactor');
 CALL createUser('TestGodX', 'Test', 'icles', 'admin@jesnen.dk', 'm', 'test1234');
-CALL bookmarking('6','tt0167261');
-CALL updateUserRating('6', 'tt0295407', 10);
+CALL bookmarking('15','tt0167261');
+CALL updateUserRating('15', 'tt0295407', 10);
 CALL updateUserRating('2', 'tt0295407', 4);
 CALL updateUserRating('2', 'tt0295407', 9);
 CALL updateUserRating('2', 'tt0295407', 8);
